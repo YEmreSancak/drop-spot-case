@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15
+    container_name: dropspot-db
+    environment:
+      POSTGRES_USER: dropspot
+      POSTGRES_PASSWORD: dropspot
+      POSTGRES_DB: dropspot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
