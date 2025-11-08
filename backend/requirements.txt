@@ -11,6 +11,9 @@ python-dotenv
 passlib[bcrypt]
 python-jose[cryptography]
 
+# Validation extras
+email-validator
+
 #Migrations
 alembic
 
