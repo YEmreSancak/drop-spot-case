@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: dropspot
           POSTGRES_PASSWORD: dropspot
-          POSTGRES_DB: dropspot_test
+          POSTGRES_DB: dropspot
         ports:
           - 5432:5432
         options: >-
@@ -26,7 +26,8 @@ jobs:
           --health-retries=5
 
     env:
-      DATABASE_URL: postgresql+psycopg2://dropspot:dropspot@localhost:5432/dropspot_test
+      DATABASE_URL: postgresql+psycopg2://dropspot:dropspot@localhost:5432/dropspot
+      PYTHONPATH: ${{ github.workspace }}/backend
 
     steps:
       - name: Checkout repository

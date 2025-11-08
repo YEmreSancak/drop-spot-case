@@ -1,3 +1,5 @@
+import os
+import sys
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -5,11 +7,22 @@ from sqlalchemy import pool
 
 from alembic import context
 
+# ---------------------------------------------------------
+# Python path ayarı: alembic klasöründen bir seviye yukarı
+# çıkarak app modüllerine erişmesini sağlıyoruz.
+# ---------------------------------------------------------
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
 from app.db import engine, Base
+from app.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# sqlalchemy.url değerini env veya settings üzerinden ayarla
+db_url = os.getenv("DATABASE_URL", settings.DATABASE_URL)
+config.set_main_option("sqlalchemy.url", db_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
