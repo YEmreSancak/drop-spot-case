@@ -27,6 +27,7 @@ jobs:
 
     env:
       DATABASE_URL: postgresql+psycopg2://dropspot:dropspot@localhost:5432/dropspot
+      PYTHONPATH: ${{ github.workspace }}/backend
 
     steps:
       - name: Checkout repository
