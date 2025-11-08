@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app import models
 from app.db import get_db
+from fastapi import Depends
 
 SECRET_KEY = "supersecretkey"  # ileride env'e al
 ALGORITHM = "HS256"
@@ -43,3 +44,8 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     if user is None:
         raise credentials_exception
     return user
+
+def get_current_admin_user(current_user = Depends(get_current_user)):
+    if not getattr(current_user, "is_admin", False):
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return current_user
