@@ -10,3 +10,22 @@ Full-stack engineering assignment for Alpaco. Includes user auth, waitlist logic
 ## First Commit
 - Repository initialized  
 - Project skeleton created
+
+### 🧮 Seed & Priority Score
+
+Each project instance generates a unique **seed** value using:
+
+remote_url | first_commit_epoch | start_time
+
+This seed (first 12 hex chars of SHA256) determines coefficients A, B, C:
+
+A = 7 + (int(seed[0:2],16) % 5)
+B = 13 + (int(seed[2:4],16) % 7)
+C = 3 + (int(seed[4:6],16) % 3)
+
+
+Priority Score formula:
+
+priority_score = base + (signup_latency_ms % A) + (account_age_days % B) - (rapid_actions % C)
+
+This ensures each candidate’s instance has a deterministic yet personalized scoring pattern.
