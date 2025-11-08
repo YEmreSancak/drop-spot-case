@@ -1,0 +1,53 @@
+name: Backend CI
+
+on:
+  push:
+    branches: ["main", "ci/*", "feature/*"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: dropspot
+          POSTGRES_PASSWORD: dropspot
+          POSTGRES_DB: dropspot_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U dropspot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgresql+psycopg2://dropspot:dropspot@localhost:5432/dropspot_test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Run Alembic migrations
+        working-directory: backend
+        run: |
+          alembic upgrade head
+
+      - name: Run tests
+        working-directory: backend
+        run: |
+          pytest -q
