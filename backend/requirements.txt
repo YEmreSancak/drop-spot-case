@@ -7,6 +7,13 @@ sqlalchemy
 psycopg2-binary
 python-dotenv
 
+#Auth
+passlib
+python-jose[cryptography]
+
+# Validation extras
+email-validator
+
 #Migrations
 alembic
 
