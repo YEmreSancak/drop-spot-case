@@ -7,6 +7,10 @@ sqlalchemy
 psycopg2-binary
 python-dotenv
 
+#Auth
+passlib[bcrypt]
+python-jose[cryptography]
+
 #Migrations
 alembic
 
