@@ -1,4 +1,16 @@
 services:
+  backend:
+    build: ./backend
+    container_name: dropspot-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db
+    command: bash -c "sleep 5 && alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+
   db:
     image: postgres:15
     container_name: dropspot-db
