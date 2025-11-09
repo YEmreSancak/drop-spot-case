@@ -37,3 +37,33 @@ export async function leaveWaitlist(dropId: number) {
   });
   if (!res.ok) throw new Error("Failed to leave");
 }
+
+// ADMIN CRUD API fonksiyonları
+export async function getAdminDrops() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/drops`);
+  if (!res.ok) throw new Error("Failed to fetch admin drops");
+  return res.json();  
+}
+
+export async function createDrop(data: {
+  title: string;
+  description: string;
+  stock: number;
+  claim_start: string;
+}) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/drops`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Failed to create drop");
+  return res.json();
+}
+
+export async function deleteDrop(id: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/drops/${id}`, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error("Failed to delete drop");
+  return true;
+}
