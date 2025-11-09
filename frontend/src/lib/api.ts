@@ -67,3 +67,18 @@ export async function deleteDrop(id: number) {
   if (!res.ok) throw new Error("Failed to delete drop");
   return true;
 }
+
+export async function updateDrop(id: number, data: {
+  title: string;
+  description: string;
+  stock: number;
+  claim_start: string;
+}) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/drops/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Failed to update drop");
+  return res.json();
+}
